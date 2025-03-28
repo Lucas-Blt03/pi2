@@ -1,0 +1,19 @@
+# Node.js dependencies
+node_modules/
+dist/
+.angular/
+
+# Python dependencies
+__pycache__/
+*.pyc
+*.pyo
+env/
+venv/
+
+# IDE and OS files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env

@@ -1,0 +1,6 @@
+fastapi==0.110.0
+uvicorn==0.27.0
+xlwings==0.31.1
+python-multipart==0.0.9
+typing-extensions==4.8.0
+logging==0.4.9.6 # If errors are found, just comment this line

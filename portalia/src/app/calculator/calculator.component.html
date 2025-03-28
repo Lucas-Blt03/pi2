@@ -1,0 +1,112 @@
+<div class="calculator-container">
+  <h1>Simulateur de Salaire</h1>
+
+  <!-- Main Input Fields -->
+  <div>
+    <label for="tjm">Taux Journalier (€):</label>
+    <input id="tjm" type="number" [(ngModel)]="parameters.tjm" required min="290" />
+  </div>
+  <div>
+    <label for="joursTravailles">Nombre de Jours Travaillés:</label>
+    <input id="joursTravailles" type="number" [(ngModel)]="parameters.joursTravailles" required min="1" max="30" />
+  </div>
+  
+  <!-- Contract Type Selection -->
+  <label for="contractType">Type de Contrat:</label>
+  <select id="contractType" [(ngModel)]="parameters.contractType">
+    <option value="CDI">CDI</option>
+    <option value="CDD">CDD</option>
+  </select>
+  
+  <!-- Frais de Fonctionnement -->
+  <div>
+    <label for="fraisFonctionnement">Frais de Fonctionnement :</label>
+    <input id="fraisFonctionnement" type="number" [(ngModel)]="parameters.fraisFonctionnement" min="0" max="1000" />
+  </div>
+  
+  <!-- Ticket Restaurant -->
+  <div class="checkbox-container">
+    <label for="ticketRestaurant">Ticket Restaurant:</label>
+    <input id="ticketRestaurant" type="checkbox" [(ngModel)]="parameters.ticketRestaurant" />
+  </div>
+  
+  <!-- Mutuelle -->
+  <div class="checkbox-container">
+    <label for="mutuelle">Mutuelle:</label>
+    <input id="mutuelle" type="checkbox" [(ngModel)]="parameters.mutuelle" />
+  </div>
+  
+  <!-- Code Commune -->
+  <div>
+    <label for="codeCommune">Code Commune:</label>
+    <input id="codeCommune" type="text" [(ngModel)]="parameters.codeCommune" />
+  </div>
+
+  <!-- Error Message Display -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Button Container -->
+  <div class="button-container">
+    <button (click)="calculate()" [disabled]="isLoading" class="primary-button">
+      <span *ngIf="!isLoading">Calculer</span>
+      <span *ngIf="isLoading">Calcul en cours...</span>
+    </button>
+    
+    <button (click)="resetForm()" class="secondary-button">
+      Réinitialiser
+    </button>
+    
+    <button (click)="toggleDebugMode()" class="debug-button">
+      {{ debugMode ? 'Masquer Détails' : 'Afficher Détails' }}
+    </button>
+  </div>
+  
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Traitement Excel en cours...</p>
+  </div>
+  
+  <!-- Results -->
+  <div *ngIf="result && !isLoading" class="results">
+    <h2>Résultats:</h2>
+    
+    <div class="result-item">
+      <span class="result-label">TJM:</span>
+      <span class="result-value">{{ formatCurrency(result.tjm) }}</span>
+    </div>
+    
+    <div class="result-item">
+      <span class="result-label">Salaire Brut Mensuel:</span>
+      <span class="result-value">{{ formatCurrency(result.brut_mensuel) }}</span>
+    </div>
+    
+    <div class="result-item">
+      <span class="result-label">Salaire Net Mensuel:</span>
+      <span class="result-value">{{ formatCurrency(result.net_mensuel) }}</span>
+    </div>
+    
+    <div class="result-item">
+      <span class="result-label">Frais de Gestion:</span>
+      <span class="result-value">{{ formatCurrency(result.frais_gestion) }}</span>
+    </div>
+    
+    <div *ngIf="parameters.ticketRestaurant" class="result-item">
+      <span class="result-label">Contribution Ticket Restaurant:</span>
+      <span class="result-value">{{ formatCurrency(result.autres_details?.ticket_restaurant_contribution) }}</span>
+    </div>
+    
+    <div *ngIf="parameters.mutuelle" class="result-item">
+      <span class="result-label">Contribution Mutuelle:</span>
+      <span class="result-value">{{ formatCurrency(result.autres_details?.mutuelle_contribution) }}</span>
+    </div>
+    
+    <!-- Debug information -->
+    <div *ngIf="debugMode" class="debug-info">
+      <h3>Données brutes:</h3>
+      <pre>{{ result | json }}</pre>
+    </div>
+  </div>
+</div>
