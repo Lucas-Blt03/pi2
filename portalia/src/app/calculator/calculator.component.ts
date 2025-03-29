@@ -24,7 +24,8 @@ export class CalculatorComponent implements OnInit {
     tjm: 500, // Default TJM value
     joursTravailles: 18, // Default: 18 days
     contractType: 'CDI', // Default: CDI
-    fraisFonctionnement: 0, // Default: 8%
+    fraisFonctionnement: 0, // Default: 0%
+    fraisGestion: 0, // Nouveau paramètre pour la cellule J7
     ticketRestaurant: false,
     mutuelle: false,
     codeCommune: ''
@@ -37,7 +38,6 @@ export class CalculatorComponent implements OnInit {
   result: CalculationResult | null = null;
   isLoading: boolean = false;
   errorMessage: string | null = null;
-  debugMode: boolean = false; // Set to true to see raw API response
   
   constructor(private http: HttpClient) {}
   
@@ -68,11 +68,6 @@ export class CalculatorComponent implements OnInit {
     
     return numValue.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
   }
-  
-  // Toggle debug mode
-  toggleDebugMode(): void {
-    this.debugMode = !this.debugMode;
-  }
 
   // Call the backend API
   calculate(): void {
@@ -95,7 +90,8 @@ export class CalculatorComponent implements OnInit {
       .set('tjm', this.parameters.tjm.toString())
       .set('jours_travailles', this.parameters.joursTravailles.toString())
       .set('contract_type', this.parameters.contractType)
-      .set('frais_fonctionnement', (this.parameters.fraisFonctionnement / 100).toString());
+      .set('frais_fonctionnement', (this.parameters.fraisFonctionnement / 100).toString())
+      .set('frais_gestion', (this.parameters.fraisGestion / 100).toString());
     
     // Only add optional parameters if they have values
     if (this.parameters.ticketRestaurant) {
@@ -151,6 +147,7 @@ export class CalculatorComponent implements OnInit {
       joursTravailles: 18,
       contractType: 'CDI',
       fraisFonctionnement: 0,
+      fraisGestion: 0,
       ticketRestaurant: false,
       mutuelle: false,
       codeCommune: ''

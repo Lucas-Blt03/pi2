@@ -20,8 +20,14 @@
   
   <!-- Frais de Fonctionnement -->
   <div>
-    <label for="fraisFonctionnement">Frais de Fonctionnement :</label>
+    <label for="fraisFonctionnement">Frais de Fonctionnement:</label>
     <input id="fraisFonctionnement" type="number" [(ngModel)]="parameters.fraisFonctionnement" min="0" max="1000" />
+  </div>
+  
+  <!-- Frais de Gestion (nouveau) -->
+  <div>
+    <label for="fraisGestion">Frais de Gestion (%):</label>
+    <input id="fraisGestion" type="number" [(ngModel)]="parameters.fraisGestion" min="0" max="100" />
   </div>
   
   <!-- Ticket Restaurant -->
@@ -56,10 +62,6 @@
     
     <button (click)="resetForm()" class="secondary-button">
       Réinitialiser
-    </button>
-    
-    <button (click)="toggleDebugMode()" class="debug-button">
-      {{ debugMode ? 'Masquer Détails' : 'Afficher Détails' }}
     </button>
   </div>
   
@@ -101,12 +103,6 @@
     <div *ngIf="parameters.mutuelle" class="result-item">
       <span class="result-label">Contribution Mutuelle:</span>
       <span class="result-value">{{ formatCurrency(result.autres_details?.mutuelle_contribution) }}</span>
-    </div>
-    
-    <!-- Debug information -->
-    <div *ngIf="debugMode" class="debug-info">
-      <h3>Données brutes:</h3>
-      <pre>{{ result | json }}</pre>
     </div>
   </div>
 </div>
